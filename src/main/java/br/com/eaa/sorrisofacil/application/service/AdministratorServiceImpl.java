@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.UUID;
 
 @Service
@@ -16,12 +18,12 @@ public class AdministratorServiceImpl implements AdministratorServicePort {
     private AdministratorRepositoryPort port;
 
     @Override
-    public Administrator insert(Administrator administrator) {
+    public Administrator insert(Administrator administrator) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return port.insert(administrator);
     }
 
     @Override
-    public Administrator update(Long id, Administrator administrator) {
+    public Administrator update(Long id, Administrator administrator) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return port.update(id, administrator);
     }
 

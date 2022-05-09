@@ -1,4 +1,4 @@
-package br.com.eaa.sorrisofacil.adapters.dto;
+package br.com.eaa.sorrisofacil.adapters.dto.dentist;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdministratorDTO {
+public class DentistDTO {
     private String email;
     private String password;
     private String name;

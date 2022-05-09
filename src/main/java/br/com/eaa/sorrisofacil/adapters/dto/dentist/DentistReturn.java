@@ -1,5 +1,8 @@
-package br.com.eaa.sorrisofacil.adapters.dto;
+package br.com.eaa.sorrisofacil.adapters.dto.dentist;
 
+import br.com.eaa.sorrisofacil.adapters.dto.schedule.ScheduleReturn;
+import br.com.eaa.sorrisofacil.adapters.dto.service.ServiceReturn;
+import br.com.eaa.sorrisofacil.adapters.dto.client.ClientReturn;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

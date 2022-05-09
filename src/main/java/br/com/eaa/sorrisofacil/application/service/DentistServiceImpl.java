@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 @Service
 public class DentistServiceImpl implements DentistServicePort {
 
@@ -15,12 +18,12 @@ public class DentistServiceImpl implements DentistServicePort {
     private DentistRepositoryPort port;
 
     @Override
-    public Dentist insert(Dentist dentist) {
+    public Dentist insert(Dentist dentist) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return port.insert(dentist);
     }
 
     @Override
-    public Dentist update(Long id, Dentist dentist) {
+    public Dentist update(Long id, Dentist dentist) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return port.update(id, dentist);
     }
 

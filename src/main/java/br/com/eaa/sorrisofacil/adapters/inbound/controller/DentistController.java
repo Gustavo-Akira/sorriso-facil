@@ -1,8 +1,8 @@
 package br.com.eaa.sorrisofacil.adapters.inbound.controller;
 
-import br.com.eaa.sorrisofacil.adapters.dto.DentistDTO;
-import br.com.eaa.sorrisofacil.adapters.dto.DentistReturn;
-import br.com.eaa.sorrisofacil.adapters.dto.DentistUpdateDTO;
+import br.com.eaa.sorrisofacil.adapters.dto.dentist.DentistDTO;
+import br.com.eaa.sorrisofacil.adapters.dto.dentist.DentistReturn;
+import br.com.eaa.sorrisofacil.adapters.dto.dentist.DentistUpdateDTO;
 import br.com.eaa.sorrisofacil.application.domain.Dentist;
 import br.com.eaa.sorrisofacil.application.domain.PageInformation;
 import br.com.eaa.sorrisofacil.application.port.DentistServicePort;
@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 
 @RestController
@@ -34,7 +36,7 @@ public class DentistController {
     }
 
     @PostMapping("dentist")
-    public DentistReturn saveDentist(@RequestBody @Valid DentistDTO dentist){
+    public DentistReturn saveDentist(@RequestBody @Valid DentistDTO dentist) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return mapper.map(port.insert(mapper.map(dentist, Dentist.class)),DentistReturn.class);
     }
 
@@ -44,7 +46,7 @@ public class DentistController {
     }
 
     @PutMapping("dentist/{id}")
-    public DentistReturn updateDentist(@PathVariable Long id, @RequestBody @Valid DentistUpdateDTO dto){
+    public DentistReturn updateDentist(@PathVariable Long id, @RequestBody @Valid DentistUpdateDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return mapper.map(port.update(id,mapper.map(dto,Dentist.class)),DentistReturn.class);
     }
 

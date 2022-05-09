@@ -6,4 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface SpringDataAdministratorRepository extends JpaRepository<AdministratorEntity, Long> {
+    AdministratorEntity findByEmailAndPassword(String email, String password);
+
+    AdministratorEntity findByEmail(String email);
 }
