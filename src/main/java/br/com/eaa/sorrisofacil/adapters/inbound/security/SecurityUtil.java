@@ -27,9 +27,14 @@ public class SecurityUtil {
         }
     }
 
-    public void dentistAuthorized(HttpServletRequest request){
+    public boolean dentistAuthorized(HttpServletRequest request, boolean admin){
         if(loginServicePort.getRole(request.getHeader("Authorization")).equals(Administrator.class)){
-            throw new LoginException("Unauthorized Request");
+            if(!admin) {
+                throw new LoginException("Unauthorized Request");
+            }else{
+                return false;
+            }
         }
+        return true;
     }
 }
