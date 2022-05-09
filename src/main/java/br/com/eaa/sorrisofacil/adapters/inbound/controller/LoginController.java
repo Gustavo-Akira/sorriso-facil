@@ -2,7 +2,7 @@ package br.com.eaa.sorrisofacil.adapters.inbound.controller;
 
 import br.com.eaa.sorrisofacil.adapters.dto.login.LoginRequestDTO;
 import br.com.eaa.sorrisofacil.adapters.dto.login.LoginResponseDTO;
-import br.com.eaa.sorrisofacil.application.port.LoginServicePort;
+import br.com.eaa.sorrisofacil.application.port.login.LoginServicePort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

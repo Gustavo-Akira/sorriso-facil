@@ -1,7 +1,6 @@
 package br.com.eaa.sorrisofacil.adapters.inbound.filter;
 
-import br.com.eaa.sorrisofacil.application.domain.User;
-import br.com.eaa.sorrisofacil.application.port.LoginServicePort;
+import br.com.eaa.sorrisofacil.application.port.login.LoginServicePort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

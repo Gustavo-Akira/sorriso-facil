@@ -1,4 +1,4 @@
-package br.com.eaa.sorrisofacil.adapters.outbound.security;
+package br.com.eaa.sorrisofacil.adapters.outbound.persistence.util;
 
 import org.springframework.stereotype.Service;
 

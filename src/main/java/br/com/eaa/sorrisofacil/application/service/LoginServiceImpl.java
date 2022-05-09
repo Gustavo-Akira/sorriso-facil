@@ -5,9 +5,9 @@ import br.com.eaa.sorrisofacil.adapters.outbound.exceptions.LoginException;
 import br.com.eaa.sorrisofacil.application.domain.Administrator;
 import br.com.eaa.sorrisofacil.application.domain.Dentist;
 import br.com.eaa.sorrisofacil.application.domain.User;
-import br.com.eaa.sorrisofacil.application.port.AdministratorRepositoryPort;
-import br.com.eaa.sorrisofacil.application.port.DentistRepositoryPort;
-import br.com.eaa.sorrisofacil.application.port.LoginServicePort;
+import br.com.eaa.sorrisofacil.application.port.administrator.AdministratorRepositoryPort;
+import br.com.eaa.sorrisofacil.application.port.dentist.DentistRepositoryPort;
+import br.com.eaa.sorrisofacil.application.port.login.LoginServicePort;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +69,7 @@ public class LoginServiceImpl implements LoginServicePort {
     @Override
     public Class getRole(String token) {
         User user = getUser(token);
-        if(administratorRepositoryPort.getAdministrator(user.getId()) != null){
+        if(administratorRepositoryPort.getAdministratorByEmail(user.getEmail()) != null){
             return Administrator.class;
         }else{
             return Dentist.class;

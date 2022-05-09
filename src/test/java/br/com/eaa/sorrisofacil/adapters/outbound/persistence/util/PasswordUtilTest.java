@@ -1,4 +1,4 @@
-package br.com.eaa.sorrisofacil.adapters.outbound.security;
+package br.com.eaa.sorrisofacil.adapters.outbound.persistence.util;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package br.com.eaa.sorrisofacil.application.port;
+package br.com.eaa.sorrisofacil.application.port.login;
 
 import br.com.eaa.sorrisofacil.adapters.dto.login.LoginResponseDTO;
 import br.com.eaa.sorrisofacil.application.domain.User;

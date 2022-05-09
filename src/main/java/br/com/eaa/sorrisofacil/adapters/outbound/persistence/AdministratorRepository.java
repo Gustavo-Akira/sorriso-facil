@@ -1,11 +1,11 @@
 package br.com.eaa.sorrisofacil.adapters.outbound.persistence;
 
+import br.com.eaa.sorrisofacil.adapters.outbound.exceptions.NotFoundElementException;
 import br.com.eaa.sorrisofacil.adapters.outbound.persistence.entities.AdministratorEntity;
-import br.com.eaa.sorrisofacil.adapters.outbound.security.PasswordUtil;
+import br.com.eaa.sorrisofacil.adapters.outbound.persistence.util.PasswordUtil;
 import br.com.eaa.sorrisofacil.application.domain.Administrator;
-import br.com.eaa.sorrisofacil.application.domain.Dentist;
 import br.com.eaa.sorrisofacil.application.domain.PageInformation;
-import br.com.eaa.sorrisofacil.application.port.AdministratorRepositoryPort;
+import br.com.eaa.sorrisofacil.application.port.administrator.AdministratorRepositoryPort;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.UUID;
+import java.util.Optional;
 
 @Repository
 public class AdministratorRepository implements AdministratorRepositoryPort {
@@ -23,6 +23,7 @@ public class AdministratorRepository implements AdministratorRepositoryPort {
     private final ModelMapper mapper;
 
     private final PasswordUtil util;
+
 
     public AdministratorRepository(ModelMapper mapper, SpringDataAdministratorRepository repository, PasswordUtil util){
         this.mapper = mapper;
@@ -39,15 +40,22 @@ public class AdministratorRepository implements AdministratorRepositoryPort {
     @Override
     public Administrator update(Long id, Administrator administrator) throws NoSuchAlgorithmException, InvalidKeySpecException {
         administrator.setId(id);
-        if(!administrator.getPassword().contains("1000")){
-            administrator.setPassword(util.encode(administrator.getPassword()));
+        Administrator oldAdministrator = getAdministrator(id);
+        if(administrator.getPassword() != null){
+            oldAdministrator.setPassword(util.encode(administrator.getPassword()));
         }
-        return mapper.map(repository.save(mapper.map(administrator, AdministratorEntity.class)),Administrator.class);
+        if(administrator.getName() != null){
+            oldAdministrator.setName(administrator.getName());
+        }
+        if(administrator.getEmail() != null){
+            oldAdministrator.setEmail(administrator.getEmail());
+        }
+        return mapper.map(repository.save(mapper.map(oldAdministrator, AdministratorEntity.class)),Administrator.class);
     }
 
     @Override
     public Administrator getAdministrator(Long id) {
-        return mapper.map(repository.findById(id).orElseThrow(), Administrator.class);
+        return mapper.map(repository.findById(id).orElseThrow(() -> new NotFoundElementException("Administrator with this id not found")), Administrator.class);
     }
 
     @Override
@@ -62,19 +70,18 @@ public class AdministratorRepository implements AdministratorRepositoryPort {
 
     @Override
     public Administrator getAdministratorByEmailAndPassword(String email, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        AdministratorEntity entity = repository.findByEmail(email);
-
-        if(entity != null && util.validatePassword(password,entity.getPassword())){
-            return mapper.map(entity, Administrator.class);
+        Optional<AdministratorEntity> entity = repository.findByEmail(email);
+        if(!entity.isEmpty() && util.validatePassword(password,entity.get().getPassword())){
+            return mapper.map(entity.get(), Administrator.class);
         }
         return null;
     }
 
     @Override
     public Administrator getAdministratorByEmail(String email) {
-        AdministratorEntity entity = repository.findByEmail(email);
-        if(entity != null){
-            return mapper.map(entity, Administrator.class);
+        Optional<AdministratorEntity> entity = repository.findByEmail(email);
+        if(!entity.isEmpty()){
+            return mapper.map(entity.get(), Administrator.class);
         }
         return null;
     }

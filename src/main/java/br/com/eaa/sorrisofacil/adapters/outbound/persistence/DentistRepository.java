@@ -1,10 +1,12 @@
 package br.com.eaa.sorrisofacil.adapters.outbound.persistence;
 
+import br.com.eaa.sorrisofacil.adapters.outbound.exceptions.LoginException;
+import br.com.eaa.sorrisofacil.adapters.outbound.exceptions.NotFoundElementException;
 import br.com.eaa.sorrisofacil.adapters.outbound.persistence.entities.DentistEntity;
-import br.com.eaa.sorrisofacil.adapters.outbound.security.PasswordUtil;
+import br.com.eaa.sorrisofacil.adapters.outbound.persistence.util.PasswordUtil;
 import br.com.eaa.sorrisofacil.application.domain.Dentist;
 import br.com.eaa.sorrisofacil.application.domain.PageInformation;
-import br.com.eaa.sorrisofacil.application.port.DentistRepositoryPort;
+import br.com.eaa.sorrisofacil.application.port.dentist.DentistRepositoryPort;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Optional;
 
 @Repository
 public class DentistRepository implements DentistRepositoryPort {
@@ -26,6 +29,7 @@ public class DentistRepository implements DentistRepositoryPort {
     @Autowired
     private PasswordUtil util;
 
+
     @Override
     public Dentist insert(Dentist dentist) throws NoSuchAlgorithmException, InvalidKeySpecException {
         dentist.setPassword(util.encode(dentist.getPassword()));
@@ -35,15 +39,23 @@ public class DentistRepository implements DentistRepositoryPort {
     @Override
     public Dentist update(Long id, Dentist dentist) throws NoSuchAlgorithmException, InvalidKeySpecException {
         dentist.setId(id);
-        if(!dentist.getPassword().contains("1000")){
-            dentist.setPassword(util.encode(dentist.getPassword()));
+        Dentist oldDentist = getDentist(id);
+        if(dentist.getPassword() != null){
+
+            oldDentist.setPassword(util.encode(dentist.getPassword()));
         }
-        return mapper.map(repository.save(mapper.map(dentist, DentistEntity.class)),Dentist.class);
+        if(dentist.getEmail() != null){
+            oldDentist.setEmail(dentist.getEmail());
+        }
+        if(dentist.getName() != null){
+            oldDentist.setName(dentist.getName());
+        }
+        return mapper.map(repository.save(mapper.map(oldDentist, DentistEntity.class)),Dentist.class);
     }
 
     @Override
     public Dentist getDentist(Long id) {
-        return mapper.map(repository.findById(id).orElseThrow(),Dentist.class);
+        return mapper.map(repository.findById(id).orElseThrow(() -> new NotFoundElementException("Dentist with this id not found")),Dentist.class);
     }
 
     @Override
@@ -57,18 +69,18 @@ public class DentistRepository implements DentistRepositoryPort {
     }
 
     @Override
-    public Dentist getDentistByEmailAndPassword(String email, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        DentistEntity entity = repository.findByEmail(email);
-        if(entity != null && util.validatePassword(password, entity.getPassword())){
-            return mapper.map(entity,Dentist.class);
+    public Dentist getDentistByEmailAndPassword(String email, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, LoginException {
+        Optional<DentistEntity> entity = repository.findByEmail(email);
+        if(!entity.isEmpty() && util.validatePassword(password, entity.get().getPassword())){
+            return mapper.map(entity.get(),Dentist.class);
         }
         return null;
     }
 
     @Override
     public Dentist getDentistByEmail(String email) {
-        DentistEntity entity = repository.findByEmail(email);
-        if(entity != null){
+        Optional<DentistEntity> entity = repository.findByEmail(email);
+        if(!entity.isEmpty()){
             return mapper.map(entity,Dentist.class);
         }
         return null;

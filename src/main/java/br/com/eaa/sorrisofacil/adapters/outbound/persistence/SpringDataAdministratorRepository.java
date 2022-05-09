@@ -3,10 +3,9 @@ package br.com.eaa.sorrisofacil.adapters.outbound.persistence;
 import br.com.eaa.sorrisofacil.adapters.outbound.persistence.entities.AdministratorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface SpringDataAdministratorRepository extends JpaRepository<AdministratorEntity, Long> {
-    AdministratorEntity findByEmailAndPassword(String email, String password);
-
-    AdministratorEntity findByEmail(String email);
+    Optional<AdministratorEntity> findByEmail(String email);
 }

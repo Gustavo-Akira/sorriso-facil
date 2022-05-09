@@ -1,4 +1,4 @@
-package br.com.eaa.sorrisofacil.application.port;
+package br.com.eaa.sorrisofacil.application.port.dentist;
 
 import br.com.eaa.sorrisofacil.application.domain.Dentist;
 import br.com.eaa.sorrisofacil.application.domain.PageInformation;

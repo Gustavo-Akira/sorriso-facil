@@ -2,15 +2,14 @@ package br.com.eaa.sorrisofacil.application.service;
 
 import br.com.eaa.sorrisofacil.application.domain.Administrator;
 import br.com.eaa.sorrisofacil.application.domain.PageInformation;
-import br.com.eaa.sorrisofacil.application.port.AdministratorRepositoryPort;
-import br.com.eaa.sorrisofacil.application.port.AdministratorServicePort;
+import br.com.eaa.sorrisofacil.application.port.administrator.AdministratorRepositoryPort;
+import br.com.eaa.sorrisofacil.application.port.administrator.AdministratorServicePort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.UUID;
 
 @Service
 public class AdministratorServiceImpl implements AdministratorServicePort {

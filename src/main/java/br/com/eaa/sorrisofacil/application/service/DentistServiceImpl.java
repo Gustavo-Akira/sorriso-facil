@@ -2,8 +2,8 @@ package br.com.eaa.sorrisofacil.application.service;
 
 import br.com.eaa.sorrisofacil.application.domain.Dentist;
 import br.com.eaa.sorrisofacil.application.domain.PageInformation;
-import br.com.eaa.sorrisofacil.application.port.DentistRepositoryPort;
-import br.com.eaa.sorrisofacil.application.port.DentistServicePort;
+import br.com.eaa.sorrisofacil.application.port.dentist.DentistRepositoryPort;
+import br.com.eaa.sorrisofacil.application.port.dentist.DentistServicePort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
