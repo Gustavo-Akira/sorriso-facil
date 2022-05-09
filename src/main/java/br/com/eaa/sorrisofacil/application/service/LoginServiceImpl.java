@@ -43,7 +43,7 @@ public class LoginServiceImpl implements LoginServicePort {
         if(admin != null){
             return new LoginResponseDTO(generateToken(admin.getEmail()),true);
         }else if(dentist != null){
-            return new LoginResponseDTO(dentist.getEmail(),false);
+            return new LoginResponseDTO(generateToken(dentist.getEmail()),false);
         }else{
             throw new LoginException("Error with login");
         }
