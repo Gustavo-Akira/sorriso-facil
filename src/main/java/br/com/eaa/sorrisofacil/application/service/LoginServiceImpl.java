@@ -67,6 +67,13 @@ public class LoginServiceImpl implements LoginServicePort {
     }
 
     @Override
+    public Dentist getDentist(String token) {
+        User user = getUser(token);
+
+        return dentistRepositoryPort.getDentist(user.getId());
+    }
+
+    @Override
     public Class getRole(String token) {
         User user = getUser(token);
         if(administratorRepositoryPort.getAdministratorByEmail(user.getEmail()) != null){

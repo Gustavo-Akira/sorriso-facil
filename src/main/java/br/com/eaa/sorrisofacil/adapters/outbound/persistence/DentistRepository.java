@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -54,11 +56,13 @@ public class DentistRepository implements DentistRepositoryPort {
     }
 
     @Override
+    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
     public Dentist getDentist(Long id) {
         return mapper.map(repository.findById(id).orElseThrow(() -> new NotFoundElementException("Dentist with this id not found")),Dentist.class);
     }
 
     @Override
+    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
     public Page<Dentist> getDentists(PageInformation pageInformation) {
         return repository.findAll(Pageable.ofSize(pageInformation.getPageSize()).withPage(pageInformation.getActualPage())).map(x->mapper.map(x,Dentist.class));
     }
@@ -69,18 +73,20 @@ public class DentistRepository implements DentistRepositoryPort {
     }
 
     @Override
+    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
     public Dentist getDentistByEmailAndPassword(String email, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, LoginException {
-        Optional<DentistEntity> entity = repository.findByEmail(email);
-        if(!entity.isEmpty() && util.validatePassword(password, entity.get().getPassword())){
-            return mapper.map(entity.get(),Dentist.class);
+        DentistEntity entity = repository.findByEmail(email);
+        if(entity != null && util.validatePassword(password, entity.getPassword())){
+            return mapper.map(entity,Dentist.class);
         }
         return null;
     }
 
     @Override
+    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
     public Dentist getDentistByEmail(String email) {
-        Optional<DentistEntity> entity = repository.findByEmail(email);
-        if(!entity.isEmpty()){
+        DentistEntity entity = repository.findByEmail(email);
+        if(entity != null){
             return mapper.map(entity,Dentist.class);
         }
         return null;

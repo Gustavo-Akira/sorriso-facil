@@ -8,5 +8,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface SpringDataDentistRepository extends JpaRepository<DentistEntity, Long> {
-    Optional<DentistEntity> findByEmail(String email);
+    DentistEntity findByEmail(String email);
 }
