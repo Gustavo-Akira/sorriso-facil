@@ -7,8 +7,8 @@ import org.springframework.data.domain.Page;
 
 public interface ServiceServicePort {
     Service insert(Service service);
-    Service update(Long id, Service service);
-    Service getService(Long id);
+    Service update(Long id, Service service, Dentist dentist);
+    Service getService(Long id, Dentist dentist);
     Page<Service> getServices(PageInformation pageInformation, Dentist dentist);
-    void deleteService(Long id);
+    void deleteService(Long id, Dentist dentist);
 }

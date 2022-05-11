@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,7 +14,7 @@ import java.util.UUID;
 public class Service {
     private Long id;
     private String name;
-    private Float price;
+    private BigDecimal price;
     private Dentist dentist;
     private List<Schedule> schedules;
 }

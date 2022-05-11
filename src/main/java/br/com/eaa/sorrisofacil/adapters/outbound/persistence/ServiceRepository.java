@@ -1,5 +1,6 @@
 package br.com.eaa.sorrisofacil.adapters.outbound.persistence;
 
+import br.com.eaa.sorrisofacil.adapters.outbound.exceptions.NotFoundElementException;
 import br.com.eaa.sorrisofacil.adapters.outbound.persistence.entities.DentistEntity;
 import br.com.eaa.sorrisofacil.adapters.outbound.persistence.entities.ServiceEntity;
 import br.com.eaa.sorrisofacil.application.domain.Dentist;
@@ -40,7 +41,7 @@ public class ServiceRepository implements ServiceRepositoryPort {
 
     @Override
     public Service getService(Long id) {
-        return mapper.map(repository.findById(id).orElseThrow(), Service.class);
+        return mapper.map(repository.findById(id).orElseThrow(()-> new NotFoundElementException("Service not Found")), Service.class);
     }
 
     @Override

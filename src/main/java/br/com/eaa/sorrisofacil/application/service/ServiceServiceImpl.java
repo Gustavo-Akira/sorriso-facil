@@ -1,5 +1,6 @@
 package br.com.eaa.sorrisofacil.application.service;
 
+import br.com.eaa.sorrisofacil.adapters.outbound.exceptions.LoginException;
 import br.com.eaa.sorrisofacil.application.domain.Dentist;
 import br.com.eaa.sorrisofacil.application.domain.PageInformation;
 import br.com.eaa.sorrisofacil.application.domain.Service;
@@ -19,12 +20,18 @@ public class ServiceServiceImpl implements ServiceServicePort {
     }
 
     @Override
-    public Service update(Long id, Service service) {
+    public Service update(Long id, Service service, Dentist dentist) {
+        if(checkDentist(id,dentist)){
+            throw new LoginException("Unauthorized");
+        }
         return port.update(id, service);
     }
 
     @Override
-    public Service getService(Long id) {
+    public Service getService(Long id, Dentist dentist) {
+        if(checkDentist(id,dentist)){
+            throw new LoginException("Unauthorized");
+        }
         return port.getService(id);
     }
 
@@ -34,7 +41,14 @@ public class ServiceServiceImpl implements ServiceServicePort {
     }
 
     @Override
-    public void deleteService(Long id) {
+    public void deleteService(Long id, Dentist dentist) {
+        if(checkDentist(id,dentist)){
+            throw new LoginException("Unauthorized");
+        }
         port.deleteService(id);
+    }
+
+    private boolean checkDentist(Long id,Dentist dentist){
+        return port.getService(id).getDentist().getId() != dentist.getId();
     }
 }

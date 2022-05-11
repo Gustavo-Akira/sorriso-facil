@@ -50,7 +50,7 @@ public class LoginServiceImpl implements LoginServicePort {
     }
 
     @Override
-    public User getUser(String token) {
+    public User getUser(String token) throws LoginException{
         String user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody().getSubject();
         if(user != null){
             Administrator administrator = administratorRepositoryPort.getAdministratorByEmail(user);
@@ -60,7 +60,7 @@ public class LoginServiceImpl implements LoginServicePort {
             }else if(dentist != null){
                 return new User(dentist.getId(),dentist.getName(),dentist.getPassword(),dentist.getEmail());
             }else{
-                throw new LoginException("Error with token please send a valid token");
+                return null;
             }
         }
         throw new LoginException("Error with token please send a valid token");

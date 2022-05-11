@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ServiceReturn {
+    private Long id;
     private Float price;
     private String name;
 }

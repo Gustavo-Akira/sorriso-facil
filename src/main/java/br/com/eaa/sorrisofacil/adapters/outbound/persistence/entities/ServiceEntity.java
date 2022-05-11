@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,7 +23,7 @@ public class ServiceEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Float price;
+    private BigDecimal price;
     @OneToMany(mappedBy = "service")
     private List<ScheduleEntity> schedules;
     @ManyToOne
