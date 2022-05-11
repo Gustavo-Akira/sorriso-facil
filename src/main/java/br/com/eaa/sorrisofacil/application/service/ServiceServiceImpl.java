@@ -20,18 +20,12 @@ public class ServiceServiceImpl implements ServiceServicePort {
     }
 
     @Override
-    public Service update(Long id, Service service, Dentist dentist) {
-        if(checkDentist(id,dentist)){
-            throw new LoginException("Unauthorized");
-        }
+    public Service update(Long id, Service service) {
         return port.update(id, service);
     }
 
     @Override
-    public Service getService(Long id, Dentist dentist) {
-        if(checkDentist(id,dentist)){
-            throw new LoginException("Unauthorized");
-        }
+    public Service getService(Long id) {
         return port.getService(id);
     }
 
@@ -41,14 +35,8 @@ public class ServiceServiceImpl implements ServiceServicePort {
     }
 
     @Override
-    public void deleteService(Long id, Dentist dentist) {
-        if(checkDentist(id,dentist)){
-            throw new LoginException("Unauthorized");
-        }
+    public void deleteService(Long id) {
         port.deleteService(id);
     }
 
-    private boolean checkDentist(Long id,Dentist dentist){
-        return port.getService(id).getDentist().getId() != dentist.getId();
-    }
 }

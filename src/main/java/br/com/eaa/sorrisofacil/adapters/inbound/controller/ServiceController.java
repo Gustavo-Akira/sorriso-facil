@@ -4,6 +4,7 @@ import br.com.eaa.sorrisofacil.adapters.dto.service.ServiceDTO;
 import br.com.eaa.sorrisofacil.adapters.dto.service.ServiceReturn;
 import br.com.eaa.sorrisofacil.adapters.dto.service.ServiceUpdateDTO;
 import br.com.eaa.sorrisofacil.adapters.inbound.security.SecurityUtil;
+import br.com.eaa.sorrisofacil.adapters.outbound.exceptions.LoginException;
 import br.com.eaa.sorrisofacil.application.domain.Dentist;
 import br.com.eaa.sorrisofacil.application.domain.PageInformation;
 import br.com.eaa.sorrisofacil.application.domain.Service;
@@ -59,19 +60,30 @@ public class ServiceController {
     @GetMapping("service/{id}")
     public ResponseEntity<ServiceReturn> getService(HttpServletRequest request,@PathVariable Long id){
         util.dentistAuthorized(request, false);
-        Service service = port.getService(id, loginServicePort.getDentist(request.getHeader("Authorization")));
-        return ResponseEntity.ok().body(mapper.map(service,ServiceReturn.class));
+        if(!isLoggedDentist(id, request.getHeader("Authorization"))){
+            throw new LoginException("Unauthorized");
+        }
+        return ResponseEntity.ok().body(mapper.map(port.getService(id),ServiceReturn.class));
     }
 
     @PutMapping("service/{id}")
     public ResponseEntity<ServiceReturn> updateService(HttpServletRequest request, @PathVariable Long id, @RequestBody @Valid ServiceUpdateDTO serviceDTO){
         util.dentistAuthorized(request, false);
-        return ResponseEntity.ok().body(mapper.map(port.update(id,mapper.map(serviceDTO, Service.class), loginServicePort.getDentist(request.getHeader("Authorization"))),ServiceReturn.class));
+        if(!isLoggedDentist(id, request.getHeader("Authorization"))){
+            throw new LoginException("Unauthorized");
+        }
+        return ResponseEntity.ok().body(mapper.map(port.update(id,mapper.map(serviceDTO, Service.class)),ServiceReturn.class));
     }
     @DeleteMapping("service/{id}")
     public ResponseEntity<Void> deleteService(HttpServletRequest request,@PathVariable Long id){
         util.dentistAuthorized(request, false);
-        port.deleteService(id, loginServicePort.getDentist(request.getHeader("Authorization")));
+        if(!isLoggedDentist(id, request.getHeader("Authorization"))){
+            throw new LoginException("Unauthorized");
+        }
+        port.deleteService(id);
         return ResponseEntity.noContent().build();
+    }
+    private boolean isLoggedDentist(Long id,String token){
+        return port.getService(id).getDentist().getId().equals(loginServicePort.getDentist(token).getId());
     }
 }
