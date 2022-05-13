@@ -23,7 +23,7 @@ public class JWTLoginFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
-        if(req.getRequestURI().equals("/login")){
+        if(req.getRequestURI().equals("/login") || req.getRequestURI().contains("api-docs") || req.getRequestURI().contains("swagger")){
             filterChain.doFilter(servletRequest,servletResponse);
         }else{
             ObjectMapper mapper = new ObjectMapper();
