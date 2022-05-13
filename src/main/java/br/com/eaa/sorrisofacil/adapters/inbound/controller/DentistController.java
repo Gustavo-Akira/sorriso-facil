@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.net.URI;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
@@ -53,12 +54,13 @@ public class DentistController {
     }
 
     @PostMapping("dentist")
-    public DentistReturn saveDentist(HttpServletRequest request,@RequestBody @Valid DentistDTO dentist) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public ResponseEntity<DentistReturn> saveDentist(HttpServletRequest request,@RequestBody @Valid DentistDTO dentist) throws NoSuchAlgorithmException, InvalidKeySpecException {
         util.adminAuthorized(request);
         if(!utilServicePort.validEmail(dentist.getEmail())){
             throw new EmailInvalidException("Invalid Email");
         }
-        return mapper.map(port.insert(mapper.map(dentist, Dentist.class)),DentistReturn.class);
+        Dentist created = port.insert(mapper.map(dentist, Dentist.class));
+        return ResponseEntity.created(URI.create("dentist/"+created.getId())).body(mapper.map(created,DentistReturn.class));
     }
 
     @GetMapping("dentist/{id}")

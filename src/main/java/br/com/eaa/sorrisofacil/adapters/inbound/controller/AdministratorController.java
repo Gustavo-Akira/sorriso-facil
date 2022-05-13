@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.net.URI;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
@@ -48,12 +49,13 @@ public class AdministratorController {
     }
 
     @PostMapping("administrator")
-    public AdministratorReturn saveAdministrator(HttpServletRequest request,@RequestBody @Valid AdministratorDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public ResponseEntity<AdministratorReturn> saveAdministrator(HttpServletRequest request,@RequestBody @Valid AdministratorDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
         util.adminAuthorized(request);
         if(!utilServicePort.validEmail(dto.getEmail())){
             throw new EmailInvalidException("Invalid Email");
         }
-        return mapper.map(port.insert(mapper.map(dto, Administrator.class)),AdministratorReturn.class);
+        Administrator administrator = port.insert(mapper.map(dto, Administrator.class));
+        return ResponseEntity.created(URI.create("administrator/"+administrator.getId())).body(mapper.map(administrator,AdministratorReturn.class));
     }
 
     @GetMapping("administrator/{id}")
@@ -75,7 +77,7 @@ public class AdministratorController {
     public ResponseEntity<Void> removeAdministrator(HttpServletRequest request,@PathVariable Long id){
         util.adminAuthorized(request);
         port.removeAdministrator(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 
