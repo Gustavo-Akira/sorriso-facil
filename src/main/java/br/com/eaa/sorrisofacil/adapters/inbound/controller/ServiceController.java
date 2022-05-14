@@ -39,19 +39,19 @@ public class ServiceController {
 
     @GetMapping("services")
     public Page<ServiceReturn> services(HttpServletRequest request){
-        util.dentistAuthorized(request,false);
+        util.dentistAuthorized(request);
         return port.getServices(new PageInformation(5,0), loginServicePort.getDentist(request.getHeader("Authorization"))).map(x->mapper.map(x,ServiceReturn.class));
     }
 
     @GetMapping("services/{page}")
     public Page<ServiceReturn> services(HttpServletRequest request, @PathVariable Integer page){
-        util.dentistAuthorized(request,false);
+        util.dentistAuthorized(request);
         return port.getServices(new PageInformation(5,page), loginServicePort.getDentist(request.getHeader("Authorization"))).map(x->mapper.map(x,ServiceReturn.class));
     }
 
     @PostMapping("service")
     public ResponseEntity<ServiceReturn> insertService(HttpServletRequest request, @RequestBody @Valid ServiceDTO serviceDTO){
-        util.dentistAuthorized(request, false);
+        util.dentistAuthorized(request);
         serviceDTO.setDentist(loginServicePort.getDentist(request.getHeader("Authorization")));
         Service service = port.insert(mapper.map(serviceDTO, Service.class));
         return ResponseEntity.created(URI.create("service"+service.getId())).body(mapper.map(service,ServiceReturn.class));
@@ -59,7 +59,7 @@ public class ServiceController {
 
     @GetMapping("service/{id}")
     public ResponseEntity<ServiceReturn> getService(HttpServletRequest request,@PathVariable Long id){
-        util.dentistAuthorized(request, false);
+        util.dentistAuthorized(request);
         if(!isLoggedDentist(id, request.getHeader("Authorization"))){
             throw new LoginException("Unauthorized");
         }
@@ -68,7 +68,7 @@ public class ServiceController {
 
     @PutMapping("service/{id}")
     public ResponseEntity<ServiceReturn> updateService(HttpServletRequest request, @PathVariable Long id, @RequestBody @Valid ServiceUpdateDTO serviceDTO){
-        util.dentistAuthorized(request, false);
+        util.dentistAuthorized(request);
         if(!isLoggedDentist(id, request.getHeader("Authorization"))){
             throw new LoginException("Unauthorized");
         }
@@ -76,7 +76,7 @@ public class ServiceController {
     }
     @DeleteMapping("service/{id}")
     public ResponseEntity<Void> deleteService(HttpServletRequest request,@PathVariable Long id){
-        util.dentistAuthorized(request, false);
+        util.dentistAuthorized(request);
         if(!isLoggedDentist(id, request.getHeader("Authorization"))){
             throw new LoginException("Unauthorized");
         }

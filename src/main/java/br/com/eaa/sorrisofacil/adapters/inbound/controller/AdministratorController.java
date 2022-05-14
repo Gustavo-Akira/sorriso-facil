@@ -8,6 +8,7 @@ import br.com.eaa.sorrisofacil.adapters.outbound.exceptions.EmailInvalidExceptio
 import br.com.eaa.sorrisofacil.application.domain.Administrator;
 import br.com.eaa.sorrisofacil.application.domain.PageInformation;
 import br.com.eaa.sorrisofacil.application.port.administrator.AdministratorServicePort;
+import br.com.eaa.sorrisofacil.application.port.login.LoginServicePort;
 import br.com.eaa.sorrisofacil.application.port.validation.EmailUtilServicePort;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class AdministratorController {
 
     @Autowired
     private EmailUtilServicePort utilServicePort;
+
+    @Autowired
+    private LoginServicePort loginServicePort;
 
     @GetMapping("administrators")
     public Page<AdministratorReturn> administrators(HttpServletRequest request){
@@ -64,6 +68,12 @@ public class AdministratorController {
         return mapper.map(port.getAdministrator(id),AdministratorReturn.class);
     }
 
+    @GetMapping("administrator")
+    public AdministratorReturn getAdministrator(HttpServletRequest request){
+        util.adminAuthorized(request);
+        return mapper.map(port.getAdministrator(loginServicePort.getUser(request.getHeader("Authorization")).getId()),AdministratorReturn.class);
+    }
+
     @PutMapping("administrator/{id}")
     public AdministratorReturn updateAdministrator(HttpServletRequest request,@RequestBody @Valid AdministratorUpdateDTO dto, @PathVariable Long id) throws NoSuchAlgorithmException, InvalidKeySpecException {
         util.adminAuthorized(request);
@@ -71,6 +81,15 @@ public class AdministratorController {
             throw new EmailInvalidException("Invalid Email");
         }
         return mapper.map(port.update(id,mapper.map(dto, Administrator.class)),AdministratorReturn.class);
+    }
+
+    @PutMapping("administrator")
+    public AdministratorReturn updateAdministrator(HttpServletRequest request,@RequestBody @Valid AdministratorUpdateDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        util.adminAuthorized(request);
+        if(dto.getEmail() != null && !utilServicePort.validEmail(dto.getEmail())){
+            throw new EmailInvalidException("Invalid Email");
+        }
+        return mapper.map(port.update(loginServicePort.getUser(request.getHeader("Authorization")).getId(),mapper.map(dto, Administrator.class)),AdministratorReturn.class);
     }
 
     @DeleteMapping("administrator/{id}")

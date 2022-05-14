@@ -65,35 +65,47 @@ public class DentistController {
 
     @GetMapping("dentist/{id}")
     public DentistReturn getDentist(HttpServletRequest request,@PathVariable Long id){
-        if(util.dentistAuthorized(request, true)){
-            if(!loginServicePort.getUser(request.getHeader("Authorization")).getId().equals(id)){
-                throw new LoginException("Unauthorized");
-            }
-        }
+        util.adminAuthorized(request);
         return mapper.map(port.getDentist(id),DentistReturn.class);
+    }
+
+    @GetMapping("dentist")
+    public DentistReturn getDentist(HttpServletRequest request){
+        util.dentistAuthorized(request);
+        return mapper.map(port.getDentist(loginServicePort.getUser(request.getHeader("Authorization")).getId()),DentistReturn.class);
     }
 
     @PutMapping("dentist/{id}")
     public DentistReturn updateDentist(HttpServletRequest request,@PathVariable Long id, @RequestBody @Valid DentistUpdateDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        if(util.dentistAuthorized(request, true)){
-            if(!loginServicePort.getUser(request.getHeader("Authorization")).getId().equals(id)){
-                throw new LoginException("Unauthorized");
-            }
-        }
+        util.adminAuthorized(request);
         if(dto.getEmail()!= null && !utilServicePort.validEmail(dto.getEmail())){
             throw new EmailInvalidException("Invalid Email");
         }
         return mapper.map(port.update(id,mapper.map(dto,Dentist.class)),DentistReturn.class);
     }
 
+    @PutMapping("dentist")
+    public DentistReturn updateDentist(HttpServletRequest request, @RequestBody @Valid DentistUpdateDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        if(util.dentistAuthorized(request)){
+            throw new LoginException("Unauthorized");
+        }
+        if(dto.getEmail()!= null && !utilServicePort.validEmail(dto.getEmail())){
+            throw new EmailInvalidException("Invalid Email");
+        }
+        return mapper.map(port.update(loginServicePort.getUser(request.getHeader("Authorization")).getId(),mapper.map(dto,Dentist.class)),DentistReturn.class);
+    }
+
     @DeleteMapping("dentist/{id}")
     public ResponseEntity<Void> deleteDentist(HttpServletRequest request, @PathVariable Long id){
-        if(util.dentistAuthorized(request, true)){
-            if(!loginServicePort.getUser(request.getHeader("Authorization")).getId().equals(id)){
-                throw new LoginException("Unauthorized");
-            }
-        }
+        util.adminAuthorized(request);
         port.removeDentist(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("dentist")
+    public ResponseEntity<Void> deleteDentist(HttpServletRequest request){
+        util.dentistAuthorized(request);
+        port.removeDentist(loginServicePort.getUser(request.getHeader("Authorization")).getId());
         return ResponseEntity.noContent().build();
     }
 }
