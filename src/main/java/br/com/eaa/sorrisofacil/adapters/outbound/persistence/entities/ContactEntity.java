@@ -12,6 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@Table(name = "contact")
 public class ContactEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

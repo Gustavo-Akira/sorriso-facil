@@ -13,14 +13,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "client")
 public class ClientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private int age;
-    @OneToMany
-    private List<ContactEntity> contacts;
+    @OneToOne
+    private ContactEntity contacts;
     @OneToMany
     private List<ScheduleEntity> schedules;
     @ManyToOne

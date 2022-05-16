@@ -14,7 +14,7 @@ public class Client {
     private Long id;
     private String name;
     private int age;
-    private List<Contact> contacts;
+    private Contact contacts;
     private List<Schedule> schedules;
     private Dentist dentist;
 }

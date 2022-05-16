@@ -18,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @ToString(exclude = "dentist")
+@Table(name = "service")
 public class ServiceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
