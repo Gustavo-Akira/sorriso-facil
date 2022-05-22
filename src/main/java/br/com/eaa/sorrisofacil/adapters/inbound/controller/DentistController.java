@@ -86,7 +86,7 @@ public class DentistController {
 
     @PutMapping("dentist")
     public DentistReturn updateDentist(HttpServletRequest request, @RequestBody @Valid DentistUpdateDTO dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        if(util.dentistAuthorized(request)){
+        if(!util.dentistAuthorized(request)){
             throw new LoginException("Unauthorized");
         }
         if(dto.getEmail()!= null && !utilServicePort.validEmail(dto.getEmail())){

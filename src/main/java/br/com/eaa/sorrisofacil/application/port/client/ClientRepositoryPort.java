@@ -9,5 +9,6 @@ public interface ClientRepositoryPort {
     Client getClient(Long id);
     Client updateClient(Long id, Client client);
     Page<Client> getClients(PageInformation pageInformation, Dentist dentist);
-
+    void deleteClient(Long id);
+    Client insertClient(Client client);
 }
