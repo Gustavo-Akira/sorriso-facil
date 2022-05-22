@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 @Repository
@@ -35,6 +37,7 @@ public class ClientRepository implements ClientRepositoryPort {
     }
 
     @Override
+    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
     public Page<Client> getClients(PageInformation pageInformation, Dentist dentist) {
         return repository.findAllByDentist(Pageable.ofSize(pageInformation.getPageSize()).withPage(pageInformation.getActualPage()), mapper.map(dentist, DentistEntity.class)).map(x->mapper.map(x,Client.class));
     }

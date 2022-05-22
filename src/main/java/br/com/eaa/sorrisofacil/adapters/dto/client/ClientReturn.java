@@ -17,6 +17,6 @@ public class ClientReturn {
     private Long id;
     private String name;
     private int age;
-    private List<ContactReturn> contacts;
+    private ContactReturn contacts;
     private List<ScheduleReturn> schedules;
 }

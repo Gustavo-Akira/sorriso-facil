@@ -1,6 +1,5 @@
 package br.com.eaa.sorrisofacil.adapters.dto.client;
 
-import br.com.eaa.sorrisofacil.adapters.dto.contact.ContactDTO;
 import br.com.eaa.sorrisofacil.application.domain.Contact;
 import br.com.eaa.sorrisofacil.application.domain.Dentist;
 import lombok.AllArgsConstructor;

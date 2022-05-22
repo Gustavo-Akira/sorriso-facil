@@ -6,6 +6,7 @@ import br.com.eaa.sorrisofacil.adapters.dto.client.ClientUpdateDTO;
 import br.com.eaa.sorrisofacil.adapters.inbound.security.SecurityUtil;
 import br.com.eaa.sorrisofacil.adapters.outbound.exceptions.LoginException;
 import br.com.eaa.sorrisofacil.application.domain.Client;
+import br.com.eaa.sorrisofacil.application.domain.Contact;
 import br.com.eaa.sorrisofacil.application.domain.PageInformation;
 import br.com.eaa.sorrisofacil.application.port.client.ClientServicePort;
 import br.com.eaa.sorrisofacil.application.port.login.LoginServicePort;

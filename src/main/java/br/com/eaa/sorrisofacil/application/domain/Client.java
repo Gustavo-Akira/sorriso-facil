@@ -3,6 +3,7 @@ package br.com.eaa.sorrisofacil.application.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.UUID;
@@ -10,6 +11,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "dentist")
 public class Client {
     private Long id;
     private String name;

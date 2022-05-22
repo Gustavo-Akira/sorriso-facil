@@ -1,19 +1,17 @@
 package br.com.eaa.sorrisofacil.adapters.dto.contact;
 
-import br.com.eaa.sorrisofacil.adapters.dto.address.AddressDTO;
-import br.com.eaa.sorrisofacil.adapters.dto.telephone.TelephoneDTO;
 import br.com.eaa.sorrisofacil.application.domain.Client;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContactDTO {
-    private Client client;
-    private AddressDTO addresses;
-    private List<TelephoneDTO> telephones;
+    @NotNull(message = "id cannot be null")
+    private Long id;
 }

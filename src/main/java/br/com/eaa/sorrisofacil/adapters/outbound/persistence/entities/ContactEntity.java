@@ -1,5 +1,6 @@
 package br.com.eaa.sorrisofacil.adapters.outbound.persistence.entities;
 
+import br.com.eaa.sorrisofacil.application.domain.Client;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,4 +22,6 @@ public class ContactEntity {
     private AddressEntity address;
     @OneToMany(mappedBy = "contact")
     private List<TelephoneEntity> telephones;
+    @OneToOne
+    private ClientEntity client;
 }

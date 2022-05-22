@@ -17,14 +17,14 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "dentist")
+@ToString(exclude = {"clients"})
 public class DentistEntity extends  UserEntity{
     @OneToMany(mappedBy = "dentist", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<ServiceEntity> services;
     @OneToMany(mappedBy = "dentist", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonIgnore
+    @JsonManagedReference
     private List<ClientEntity> clients;
     @OneToMany(mappedBy = "dentist", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     private List<ScheduleEntity> schedules;
 }
