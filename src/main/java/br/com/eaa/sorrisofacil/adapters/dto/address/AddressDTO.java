@@ -1,5 +1,6 @@
 package br.com.eaa.sorrisofacil.adapters.dto.address;
 
+import br.com.eaa.sorrisofacil.application.domain.Contact;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,4 +31,5 @@ public class AddressDTO {
     @NotEmpty(message = "cep cannot be empty")
     @NotNull(message = "cep cannot be null")
     private String cep;
+    private Contact contact;
 }

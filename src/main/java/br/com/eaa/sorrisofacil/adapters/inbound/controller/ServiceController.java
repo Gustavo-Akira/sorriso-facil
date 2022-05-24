@@ -80,6 +80,8 @@ public class ServiceController {
         if(!isLoggedDentist(id, request.getHeader("Authorization"))){
             throw new LoginException("Unauthorized");
         }
+        System.out.println("delete");
+        System.out.println(id);
         port.deleteService(id);
         return ResponseEntity.noContent().build();
     }
