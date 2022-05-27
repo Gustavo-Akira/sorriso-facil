@@ -1,14 +1,14 @@
 package br.com.eaa.sorrisofacil.application.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "contact")
+@EqualsAndHashCode(exclude = "contact")
 public class Telephone {
     private Long id;
     private String ddd;

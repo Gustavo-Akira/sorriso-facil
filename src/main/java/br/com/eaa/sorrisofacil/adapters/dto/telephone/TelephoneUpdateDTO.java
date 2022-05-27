@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TelephoneReturn {
-    private Long id;
+public class TelephoneUpdateDTO {
     private String number;
     private String ddd;
 }
