@@ -24,9 +24,9 @@ public class ClientEntity {
     private Long id;
     private String name;
     private int age;
-    @OneToOne(targetEntity = ContactEntity.class)
+    @OneToOne(targetEntity = ContactEntity.class,orphanRemoval = true)
     private ContactEntity contacts;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ScheduleEntity> schedules;
     @ManyToOne
     @JsonBackReference

@@ -22,6 +22,6 @@ public class AddressEntity {
     private String state;
     private String country;
     private String cep;
-    @OneToOne
+    @OneToOne()
     private ContactEntity contact;
 }

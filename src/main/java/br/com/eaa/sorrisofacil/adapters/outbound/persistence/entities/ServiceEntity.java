@@ -25,7 +25,7 @@ public class ServiceEntity {
     private Long id;
     private String name;
     private BigDecimal price;
-    @OneToMany(mappedBy = "service")
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
     private List<ScheduleEntity> schedules;
     @ManyToOne
     private DentistEntity dentist;

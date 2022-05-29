@@ -18,10 +18,10 @@ public class ContactEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(mappedBy = "contact")
+    @OneToOne(mappedBy = "contact",orphanRemoval = true)
     private AddressEntity address;
-    @OneToMany(mappedBy = "contact")
+    @OneToMany(mappedBy = "contact",orphanRemoval = true)
     private List<TelephoneEntity> telephones;
-    @OneToOne
+    @OneToOne( orphanRemoval = true)
     private ClientEntity client;
 }

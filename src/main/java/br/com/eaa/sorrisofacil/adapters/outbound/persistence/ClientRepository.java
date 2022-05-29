@@ -4,6 +4,7 @@ import br.com.eaa.sorrisofacil.adapters.outbound.exceptions.NotFoundElementExcep
 import br.com.eaa.sorrisofacil.adapters.outbound.persistence.entities.ClientEntity;
 import br.com.eaa.sorrisofacil.adapters.outbound.persistence.entities.DentistEntity;
 import br.com.eaa.sorrisofacil.application.domain.Client;
+import br.com.eaa.sorrisofacil.application.domain.Contact;
 import br.com.eaa.sorrisofacil.application.domain.Dentist;
 import br.com.eaa.sorrisofacil.application.domain.PageInformation;
 import br.com.eaa.sorrisofacil.application.port.client.ClientRepositoryPort;
@@ -23,6 +24,9 @@ public class ClientRepository implements ClientRepositoryPort {
     private SpringDataClientRepository repository;
 
     @Autowired
+    private ContactRepository contactRepository;
+
+    @Autowired
     private ModelMapper mapper;
 
     @Override
@@ -39,6 +43,9 @@ public class ClientRepository implements ClientRepositoryPort {
         if(client.getAge() != 0){
             old.setAge(client.getAge());
         }
+        if(client.getContacts() != null){
+            old.setContacts(client.getContacts());
+        }
         return mapper.map(repository.save(mapper.map(old, ClientEntity.class)),Client.class);
     }
 
@@ -50,11 +57,25 @@ public class ClientRepository implements ClientRepositoryPort {
 
     @Override
     public void deleteClient(Long id) {
-        repository.deleteById(id);
+        ClientEntity entity = repository.getById(id);
+        Long contactId = 0L;
+        if(entity.getContacts() != null) {
+            contactId = entity.getContacts().getId();
+        }
+        entity.setContacts(null);
+        entity = repository.save(entity);
+        if(repository.findById(entity.getId()).isPresent()) {
+            repository.deleteById(entity.getId());
+        }
     }
 
     @Override
     public Client insertClient(Client client) {
-        return mapper.map(repository.save(mapper.map(client, ClientEntity.class)),Client.class);
+        Client entity = mapper.map(repository.save(mapper.map(client,ClientEntity.class)),Client.class);
+        Contact contact = new Contact();
+        contact.setClient(entity);
+        contact = contactRepository.insertContact(contact);
+        entity.setContacts(contact);
+        return mapper.map(repository.save(mapper.map(entity, ClientEntity.class)),Client.class);
     }
 }

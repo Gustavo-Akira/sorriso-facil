@@ -20,4 +20,8 @@ public class ContactRepository implements ContactRepositoryPort {
     public Contact insertContact(Contact contact) {
         return mapper.map(repository.save(mapper.map(contact, ContactEntity.class)),Contact.class);
     }
+
+    public void removeContact(Long id){
+        repository.deleteById(id);
+    }
 }
