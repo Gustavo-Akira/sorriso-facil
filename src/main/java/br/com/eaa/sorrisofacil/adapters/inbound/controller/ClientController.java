@@ -65,7 +65,7 @@ public class ClientController {
     @PutMapping("client/{id}")
     public ResponseEntity<Void> updateClient(HttpServletRequest request, @RequestBody ClientUpdateDTO dto, @PathVariable Long id){
         util.dentistAuthorized(request);
-        if(isLoggedDentist(id,request.getHeader("Authorization"))){
+        if(!isLoggedDentist(id,request.getHeader("Authorization"))){
             throw  new LoginException("Unauthorized");
         }
         port.updateClient(id,mapper.map(dto, Client.class));
