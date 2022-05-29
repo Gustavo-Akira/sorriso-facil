@@ -34,8 +34,30 @@ public class AddressRepository implements AddressRepositoryPort {
 
     @Override
     public Address updateAddress(Long id, Address address) {
-        address.setId(id);
-        return mapper.map(repository.save(mapper.map(address, AddressEntity.class)),Address.class);
+        Address old = mapper.map(repository.getById(id), Address.class);
+        if(address.getCep() != null){
+            old.setCep(address.getCep());
+        }
+        if(address.getCity() != null){
+            old.setCity(address.getCity());
+        }
+        if(address.getCountry()!=null){
+            old.setCountry(address.getCountry());
+        }
+        if(address.getNeighborhood() != null){
+            old.setNeighborhood(address.getNeighborhood());
+        }
+        if(address.getNumber() != 0){
+            old.setNumber(address.getNumber());
+        }
+        if(address.getState() != null){
+            old.setState(address.getState());
+        }
+
+        if(address.getStreet() != null){
+            old.setStreet(address.getStreet());
+        }
+        return mapper.map(repository.save(mapper.map(old, AddressEntity.class)),Address.class);
     }
 
     @Override

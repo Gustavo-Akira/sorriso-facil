@@ -32,8 +32,14 @@ public class ClientRepository implements ClientRepositoryPort {
 
     @Override
     public Client updateClient(Long id, Client client) {
-        client.setId(id);
-        return mapper.map(repository.save(mapper.map(client, ClientEntity.class)),Client.class);
+        Client old = mapper.map(repository.getById(id),Client.class);
+        if(client.getName() != null){
+            old.setName(client.getName());
+        }
+        if(client.getAge() != 0){
+            old.setAge(client.getAge());
+        }
+        return mapper.map(repository.save(mapper.map(old, ClientEntity.class)),Client.class);
     }
 
     @Override

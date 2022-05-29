@@ -2,6 +2,7 @@ package br.com.eaa.sorrisofacil.adapters.inbound.controller;
 
 import br.com.eaa.sorrisofacil.adapters.dto.address.AddressDTO;
 import br.com.eaa.sorrisofacil.adapters.dto.address.AddressReturn;
+import br.com.eaa.sorrisofacil.adapters.dto.address.AddressUpdateDTO;
 import br.com.eaa.sorrisofacil.adapters.inbound.security.SecurityUtil;
 import br.com.eaa.sorrisofacil.adapters.outbound.exceptions.LoginException;
 import br.com.eaa.sorrisofacil.adapters.outbound.exceptions.NotFoundElementException;
@@ -66,7 +67,7 @@ public class AddressController {
     }
 
     @PutMapping("/client/{clientId}/address/{id}")
-    public ResponseEntity<AddressReturn> updateAddress(HttpServletRequest request, @PathVariable(name = "clientId") Long clientId, @RequestBody AddressDTO dto, @PathVariable(name = "id") Long id){
+    public ResponseEntity<AddressReturn> updateAddress(HttpServletRequest request, @PathVariable(name = "clientId") Long clientId, @RequestBody AddressUpdateDTO dto, @PathVariable(name = "id") Long id){
         util.dentistAuthorized(request);
         if(!isLoggedDentist(request, clientId)){
             throw new LoginException("Unauthorized");
@@ -74,7 +75,6 @@ public class AddressController {
         if(!isAddressFromClient(clientId, id)){
             throw new NotFoundElementException("This Address doesn't exists");
         }
-        dto.setContact(clientServicePort.getClient(clientId).getContacts());
         return ResponseEntity.ok(mapper.map(port.updateAddress(id,mapper.map(dto,Address.class)),AddressReturn.class));
     }
     @DeleteMapping("/client/{clientId}/address/{id}")
