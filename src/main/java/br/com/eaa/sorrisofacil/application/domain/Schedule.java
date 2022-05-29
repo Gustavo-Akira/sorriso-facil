@@ -1,8 +1,6 @@
 package br.com.eaa.sorrisofacil.application.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -10,6 +8,8 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "dentist")
+@EqualsAndHashCode(exclude = "dentist")
 public class Schedule {
     private Long id;
     private LocalDateTime startTime;

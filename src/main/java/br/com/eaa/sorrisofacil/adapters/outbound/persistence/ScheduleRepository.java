@@ -34,7 +34,16 @@ public class ScheduleRepository implements ScheduleRepositoryPort {
 
     @Override
     public Schedule updateSchedule(Long id, Schedule schedule) {
-        schedule.setId(id);
+        Schedule old = mapper.map(repository.getById(id), Schedule.class);
+        if(schedule.getService() != null){
+            old.setService(schedule.getService());
+        }
+        if(schedule.getStartTime() != null){
+            old.setStartTime(schedule.getStartTime());
+        }
+        if(schedule.getEndTime() != null){
+            old.setEndTime(schedule.getEndTime());
+        }
         return mapper.map(repository.save(mapper.map(schedule,ScheduleEntity.class)),Schedule.class);
     }
 

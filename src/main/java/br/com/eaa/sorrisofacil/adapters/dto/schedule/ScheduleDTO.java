@@ -17,7 +17,6 @@ public class ScheduleDTO {
     private LocalDateTime startTime;
     @NotNull(message = "EndTime cannot be null")
     private LocalDateTime endTime;
-    @NotNull(message = "Service cannot be null")
     private Service service;
     private Client client;
     private Dentist dentist;

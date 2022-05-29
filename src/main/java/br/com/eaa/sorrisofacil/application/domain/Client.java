@@ -8,8 +8,8 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "dentist")
-@EqualsAndHashCode(exclude = "dentist")
+@ToString(exclude = {"dentist","schedules"})
+@EqualsAndHashCode(exclude = {"dentist","schedules"})
 public class Client {
     private Long id;
     private String name;

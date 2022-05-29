@@ -14,4 +14,5 @@ public class ScheduleUpdateDTO {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Service service;
+    private Long serviceId;
 }
