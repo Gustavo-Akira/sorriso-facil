@@ -2,11 +2,9 @@ package br.com.eaa.sorrisofacil.adapters.outbound.persistence;
 
 import br.com.eaa.sorrisofacil.adapters.outbound.exceptions.NotFoundElementException;
 import br.com.eaa.sorrisofacil.adapters.outbound.persistence.entities.ClientEntity;
+import br.com.eaa.sorrisofacil.adapters.outbound.persistence.entities.ContactEntity;
 import br.com.eaa.sorrisofacil.adapters.outbound.persistence.entities.DentistEntity;
-import br.com.eaa.sorrisofacil.application.domain.Client;
-import br.com.eaa.sorrisofacil.application.domain.Contact;
-import br.com.eaa.sorrisofacil.application.domain.Dentist;
-import br.com.eaa.sorrisofacil.application.domain.PageInformation;
+import br.com.eaa.sorrisofacil.application.domain.*;
 import br.com.eaa.sorrisofacil.application.port.client.ClientRepositoryPort;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +25,16 @@ public class ClientRepository implements ClientRepositoryPort {
     private ContactRepository contactRepository;
 
     @Autowired
+    private SpringDataAddressRepository addressRepository;
+
+    @Autowired
     private ModelMapper mapper;
 
     @Override
     public Client getClient(Long id) {
-        return mapper.map(repository.findById(id).orElseThrow(()->new NotFoundElementException("client not found")), Client.class);
+        Client client = mapper.map(repository.findById(id).orElseThrow(()->new NotFoundElementException("client not found")), Client.class);
+        client.getContacts().setAddress(mapper.map(addressRepository.findAllByContact(Pageable.ofSize(5).withPage(0),mapper.map(client.getContacts(), ContactEntity.class)).stream().findFirst().get(), Address.class));
+        return client;
     }
 
     @Override
