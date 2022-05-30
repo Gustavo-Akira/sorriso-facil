@@ -33,9 +33,14 @@ public class TelephoneRepository implements TelephoneRepositoryPort {
 
     @Override
     public Telephone updateTelephone(Long id, Telephone telephone) {
-        telephone.setId(id);
-
-        return mapper.map(repository.save(mapper.map(telephone,TelephoneEntity.class)),Telephone.class);
+        Telephone old = mapper.map(repository.findById(id).orElseThrow(), Telephone.class);
+        if(telephone.getDdd() != null){
+            old.setDdd(telephone.getDdd());
+        }
+        if(telephone.getNumber() != null){
+            old.setNumber(telephone.getNumber());
+        }
+        return mapper.map(repository.save(mapper.map(old,TelephoneEntity.class)),Telephone.class);
     }
 
     @Override

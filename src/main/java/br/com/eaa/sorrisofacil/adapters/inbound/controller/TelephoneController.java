@@ -102,6 +102,7 @@ public class TelephoneController {
         return ResponseEntity.noContent().build();
     }
     private boolean isTelephoneFromClient(Long clientId, Long id) {
+        System.out.println(clientServicePort.getClient(clientId).getContacts().getTelephones());
         return clientServicePort.getClient(clientId).getContacts().getTelephones().stream().anyMatch(x->x.getId().equals(id));
     }
 
