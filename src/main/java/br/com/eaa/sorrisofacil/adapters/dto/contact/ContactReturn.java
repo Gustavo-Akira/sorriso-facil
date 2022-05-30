@@ -18,7 +18,7 @@ import java.util.List;
 @ToString(exclude = "client")
 public class ContactReturn {
     private Long id;
-    private AddressReturn addresses;
+    private AddressReturn address;
     @JsonIgnore
     private ClientReturn client;
     private List<TelephoneReturn> telephones;
