@@ -21,6 +21,8 @@ public class AddressRepository implements AddressRepositoryPort {
 
     @Autowired
     private ModelMapper mapper;
+    @Autowired
+    private SpringDataContactRepository contactRepository;
 
     @Override
     public Address getAddress(Long id) {
@@ -29,7 +31,10 @@ public class AddressRepository implements AddressRepositoryPort {
 
     @Override
     public Address insertAddress(Address address) {
-        return mapper.map(repository.save(mapper.map(address, AddressEntity.class)),Address.class);
+        Address saved = mapper.map(repository.save(mapper.map(address, AddressEntity.class)),Address.class);
+        address.getContact().setAddress(saved);
+        contactRepository.save(mapper.map(address.getContact(),ContactEntity.class));
+        return saved;
     }
 
     @Override
