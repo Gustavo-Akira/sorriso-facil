@@ -33,7 +33,9 @@ public class ClientRepository implements ClientRepositoryPort {
     @Override
     public Client getClient(Long id) {
         Client client = mapper.map(repository.findById(id).orElseThrow(()->new NotFoundElementException("client not found")), Client.class);
-        client.getContacts().setAddress(mapper.map(addressRepository.findAllByContact(Pageable.ofSize(5).withPage(0),mapper.map(client.getContacts(), ContactEntity.class)).stream().findFirst().get(), Address.class));
+        if(addressRepository.findAllByContact(Pageable.ofSize(5).withPage(0), mapper.map(client.getContacts(), ContactEntity.class)).stream().findFirst().isPresent()) {
+            client.getContacts().setAddress(mapper.map(addressRepository.findAllByContact(Pageable.ofSize(5).withPage(0), mapper.map(client.getContacts(), ContactEntity.class)).stream().findFirst().get(), Address.class));
+        }
         return client;
     }
 
