@@ -27,7 +27,6 @@ public class JWTLoginFilter implements Filter {
             filterChain.doFilter(servletRequest,servletResponse);
         }else{
             ObjectMapper mapper = new ObjectMapper();
-            mapper.findAndRegisterModules();
             String authentication = req.getHeader("Authorization");
             if(authentication != null && !authentication.isEmpty()){
                 if(port.validToken(authentication)){

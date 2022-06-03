@@ -44,7 +44,7 @@ public class ScheduleRepository implements ScheduleRepositoryPort {
         if(schedule.getEndTime() != null){
             old.setEndTime(schedule.getEndTime());
         }
-        return mapper.map(repository.save(mapper.map(schedule,ScheduleEntity.class)),Schedule.class);
+        return mapper.map(repository.save(mapper.map(old,ScheduleEntity.class)),Schedule.class);
     }
 
     @Override
@@ -54,6 +54,6 @@ public class ScheduleRepository implements ScheduleRepositoryPort {
 
     @Override
     public void removeSchedule(Long id) {
-        repository.deleteById(id);
+        repository.removeSchedule(id);
     }
 }
